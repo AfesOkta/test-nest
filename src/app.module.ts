@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReservationRepository } from './reservation/reservation.repository';
 import { CustomersController } from './customers/customers.controller';
 import { TablesController } from './tables/tables.controller';
 import { ReservationController } from './reservation/reservation.controller';
@@ -14,6 +13,7 @@ import { Tables } from './tables/tables.entity/tables.entity';
 import { Reservation } from './reservation/reservation.entity/reservation.entity';
 import { CustomersModule } from './customers/Customers.module';
 import { TablesModule } from './tables/tables.module';
+import { ReservationModule } from './reservation/reservation.module';
 
 @Module({
   imports: [
@@ -28,9 +28,9 @@ import { TablesModule } from './tables/tables.module';
       entities: [Customer, Tables, Reservation],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([ReservationRepository]),
     CustomersModule,
     TablesModule,
+    ReservationModule,
   ],
   controllers: [
     AppController,

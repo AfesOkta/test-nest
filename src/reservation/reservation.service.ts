@@ -2,19 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Reservation } from './reservation.entity/reservation.entity';
 import { Customer } from '../customers/customers.entity/customer.entity';
 import { Tables } from '../tables/tables.entity/tables.entity';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ReservationRepository } from './reservation.repository';
-import { CustomerService } from 'src/customers/customers.service';
-import { TablesService } from 'src/tables/tables.service';
 
 @Injectable()
 export class ReservationService {
   constructor(
-    @InjectRepository(ReservationRepository)
-    private reservationRepository: ReservationRepository,
-    private customerService: CustomerService,
-    private tablesService: TablesService,
+    @InjectRepository(Reservation)
+    private reservationRepository: Repository<Reservation>,    
     private dataSource: DataSource, // DataSource untuk transaksi manual
   ) {}
 

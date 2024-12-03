@@ -2,6 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation.entity/reservation.entity';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateReservationDto } from 'src/dto/create-reservation.dto';
 
 @Controller('reservations')
 export class ReservationController {
@@ -17,16 +18,13 @@ export class ReservationController {
   })
   async createReservation(
     @Body()
-    reservationDto: {
-      customerId: number;
-      tableId: number;
-      reservationTime: Date;
-    },
+    reservationDto: CreateReservationDto,
   ) {
+    const reservationTimeAsDate = new Date(reservationDto.reservationTime);
     return this.reservationService.createReservation(
       reservationDto.customerId,
       reservationDto.tableId,
-      reservationDto.reservationTime,
+      reservationTimeAsDate,
     );
   }
 }
