@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class ReservationService {
   constructor(
     @InjectRepository(Reservation)
-    private reservationRepository: Repository<Reservation>,    
+    private reservationRepository: Repository<Reservation>,
     private dataSource: DataSource, // DataSource untuk transaksi manual
   ) {}
 
