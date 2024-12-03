@@ -14,6 +14,7 @@ import { Reservation } from './reservation/reservation.entity/reservation.entity
 import { CustomersModule } from './customers/Customers.module';
 import { TablesModule } from './tables/tables.module';
 import { ReservationModule } from './reservation/reservation.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -31,6 +32,20 @@ import { ReservationModule } from './reservation/reservation.module';
     CustomersModule,
     TablesModule,
     ReservationModule,
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true jika menggunakan SSL/TLS
+        auth: {
+          user: 'revisoft783@gmail.com',
+          pass: '123098qwepoi',
+        },
+      },
+      defaults: {
+        from: '"Restaurant Reservation" <admin@example.com>', // Default "from" email
+      },
+    }),
   ],
   controllers: [
     AppController,

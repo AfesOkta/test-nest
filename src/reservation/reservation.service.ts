@@ -4,6 +4,7 @@ import { Repository, DataSource } from 'typeorm';
 import { Reservation } from './reservation.entity/reservation.entity';
 import { Customer } from 'src/customers/customers.entity/customer.entity';
 import { Tables } from 'src/tables/tables.entity/tables.entity';
+import { EmailService } from 'src/utils/email.service';
 
 const OPEN_HOUR = 9;
 const CLOSE_HOUR = 21;
@@ -13,7 +14,8 @@ export class ReservationService {
   constructor(
     @InjectRepository(Reservation)
     private reservationRepository: Repository<Reservation>,
-    private dataSource: DataSource, // DataSource untuk transaksi manual
+    private dataSource: DataSource,
+    private emailService: EmailService,
   ) {}
 
   async createReservation(
@@ -65,7 +67,18 @@ export class ReservationService {
       await manager.getRepository(Tables).save(tables);
 
       // Save the reservation
-      return manager.getRepository(Reservation).save(reservations);
+      manager.getRepository(Reservation).save(reservations);
+
+      // Kirim email ke pelanggan
+      await this.emailService.sendReservationSuccessEmail(
+        customer.email,
+        customer.name,
+        {
+          table: 'Meja nomer ' + tables.seats,
+          time: reservationTime.toISOString(), // Waktu reservasi
+        },
+      );
+      return reservations;
     });
   }
 }
